@@ -1,5 +1,6 @@
-import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { getImages } from 'services/getImages';
 import { ColorRing } from 'react-loader-spinner';
 import css from './ImageGallery.module.css';
@@ -10,7 +11,15 @@ export class ImageGallery extends Component {
     loading: false,
     error: '',
     page: 1,
+    total: null,
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.searchQuery !== prevProps.searchQuery) {
+      this.setState({ page: 1 });
+      this.loadImages(this.props.searchQuery, 1);
+    }
+  }
 
   onLoadMoreClick = () => {
     const newPage = this.state.page + 1;
@@ -24,15 +33,18 @@ export class ImageGallery extends Component {
     this.setState({ loading: true });
     getImages(searchQuery, page)
       .then(response => {
-       
         if (response.status === 200) {
           return response.json();
         } else throw Error(response.message);
       })
-      .then(images => {
+      .then(data => {
         this.setState(prevState => {
-         const newImages = page === 1? images.hits: [...(prevState.images || []), ...images.hits] 
-          return { images: newImages};
+          const newImages =
+            page === 1
+              ? data.hits
+              : [...(prevState.images || []), ...data.hits];
+
+          return { images: newImages, total: data.total };
         });
       })
       .catch(error => this.setState({ error: error.message }))
@@ -41,12 +53,7 @@ export class ImageGallery extends Component {
       });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.searchQuery !== prevProps.searchQuery) {
-      this.setState({ page: 1 });
-      this.loadImages(this.props.searchQuery, 1);
-    }
-  }
+  
   render() {
     const { loading, images, error } = this.state;
     return (
@@ -73,8 +80,19 @@ export class ImageGallery extends Component {
               />
             ))}
         </ul>
-        {images && <LoadMore onClick={this.onLoadMoreClick} />}
+        {images && images.length !== 0 && images.length !== this.state.total && <LoadMore onClick={this.onLoadMoreClick} />}
       </>
     );
   }
 }
+
+ImageGallery.propTypes = {
+  searchQuery: PropTypes.string.isRequired,
+  state: PropTypes.shape({
+    images: PropTypes.array,
+    loading: PropTypes.bool,
+    error: PropTypes.string.isRequired,
+    page: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired
+  }),
+};

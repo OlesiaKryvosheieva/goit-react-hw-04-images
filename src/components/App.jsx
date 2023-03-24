@@ -1,7 +1,6 @@
 import { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-
 
 import Searchbar from './Searchbar/Searchbar';
 
@@ -25,10 +24,15 @@ export class App extends Component {
         }}
       >
         <Searchbar onSubmit={this.handleFormSubmit} />
-        
-        <ImageGallery searchQuery={this.state.searchQuery} ></ImageGallery>
-        
+
+        <ImageGallery searchQuery={this.state.searchQuery}></ImageGallery>
       </div>
     );
   }
 }
+
+App.propTypes = {
+  state: PropTypes.shape({
+    searchQuery: PropTypes.string.isRequired,
+  }),
+};

@@ -1,6 +1,7 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
-import {GrSearch} from 'react-icons/gr'
+import { GrSearch } from 'react-icons/gr';
 
 export default class Searchbar extends Component {
   state = {
@@ -17,7 +18,7 @@ export default class Searchbar extends Component {
       return;
     }
     this.props.onSubmit(this.state.searchQuery);
-    this.setState({searchQuery:""})
+    this.setState({ searchQuery: '' });
   };
 
   render() {
@@ -25,7 +26,7 @@ export default class Searchbar extends Component {
       <header className={css.searchbar}>
         <form className={css.form} onSubmit={this.handleSubmit}>
           <button type="submit" className={css.button}>
-          <GrSearch />
+            <GrSearch />
           </button>
 
           <input
@@ -42,3 +43,9 @@ export default class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  state: PropTypes.shape({
+    searchQuery: PropTypes.string.isRequired,
+  }),
+};
