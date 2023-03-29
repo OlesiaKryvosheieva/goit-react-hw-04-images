@@ -1,38 +1,32 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 
 import Searchbar from './Searchbar/Searchbar';
 
-export class App extends Component {
-  state = {
-    searchQuery: '',
+export function App() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  function handleFormSubmit (searchQuery) {
+    setSearchQuery(searchQuery);
   };
 
-  handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
-  };
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gridGap: '16px',
+        paddingBottom: '24px',
+      }}
+    >
+      <Searchbar onSubmit={handleFormSubmit} />
 
-  render() {
-    return (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gridGap: '16px',
-          paddingBottom: '24px',
-        }}
-      >
-        <Searchbar onSubmit={this.handleFormSubmit} />
-
-        <ImageGallery searchQuery={this.state.searchQuery}></ImageGallery>
-      </div>
-    );
-  }
+      <ImageGallery searchQuery={searchQuery}></ImageGallery>
+    </div>
+  );
 }
 
 App.propTypes = {
-  state: PropTypes.shape({
-    searchQuery: PropTypes.string.isRequired,
-  }),
+  searchQuery: PropTypes.string.isRequired,
 };
