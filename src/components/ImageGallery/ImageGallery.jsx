@@ -39,7 +39,7 @@ export function ImageGallery({ searchQuery }) {
           const newImages =
             page === 1 ? data.hits : [...(images || []), ...data.hits];
 
-          return setImages(newImages), setTotal(data.total);
+          return (setImages(newImages), setTotal(data.total));
         });
       })
       .catch(error => setError(error.message))

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+
 import { ImageGallery } from './ImageGallery/ImageGallery';
 
 import Searchbar from './Searchbar/Searchbar';
