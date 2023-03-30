@@ -27,6 +27,4 @@ export function App() {
   );
 }
 
-App.propTypes = {
-  searchQuery: PropTypes.string.isRequired,
-};
+

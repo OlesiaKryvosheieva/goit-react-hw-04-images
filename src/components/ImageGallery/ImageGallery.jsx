@@ -13,40 +13,14 @@ export function ImageGallery({ searchQuery }) {
   const [total, setTotal] = useState(null);
 
   useEffect(() => {
-    // function loadImages(searchQuery, page) {
-    //   setLoading(true);
-    //   getImages(searchQuery, page)
-    //     .then(response => {
-    //       if (response.status === 200) {
-    //         return response.json();
-    //       } else throw Error(response.message);
-    //     })
-    //     .then(data => {
-    //       setImages(() => {
-    //         const newImages =
-    //           page === 1 ? data.hits : [...(images || []), ...data.hits];
-
-    //         return setImages(newImages), setTotal(data.total);
-    //       });
-    //     })
-    //     .catch(error => setError(error.message))
-    //     .finally(() => {
-    //       setLoading(false);
-    //     });
-    // }
-    console.log(typeof searchQuery);
     setPage(1);
 
-    loadImages(searchQuery, 1);
-  }, [searchQuery, loadImages]);
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (searchQuery !== prevProps.searchQuery) {
-  //     this.setState({ page: 1 });
-  //     this.loadImages(searchQuery, 1);
-  //   }
-  // }
+    if (typeof searchQuery === 'string' && searchQuery.length !== 0) {
+      loadImages(searchQuery, 1);
+    }
+  }, [searchQuery]);
 
-  function onLoadMoreClick(loadImages) {
+  function onLoadMoreClick() {
     const newPage = page + 1;
     setPage(newPage);
     loadImages(searchQuery, newPage);
@@ -107,9 +81,4 @@ export function ImageGallery({ searchQuery }) {
 
 ImageGallery.propTypes = {
   searchQuery: PropTypes.string.isRequired,
-  images: PropTypes.array,
-  loading: PropTypes.bool,
-  error: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
 };
