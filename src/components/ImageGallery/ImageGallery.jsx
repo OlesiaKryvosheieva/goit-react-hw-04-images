@@ -6,7 +6,7 @@ import { ColorRing } from 'react-loader-spinner';
 import css from './ImageGallery.module.css';
 import { LoadMore } from 'components/LoadMore/LoadMore';
 export function ImageGallery({ searchQuery }) {
-  const [images, setImages] = useState(null);
+   const [images, setImages] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
@@ -14,10 +14,10 @@ export function ImageGallery({ searchQuery }) {
 
   useEffect(() => {
     setPage(1);
-
     if (typeof searchQuery === 'string' && searchQuery.length !== 0) {
       loadImages(searchQuery, 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   function onLoadMoreClick() {
@@ -28,7 +28,8 @@ export function ImageGallery({ searchQuery }) {
 
   function loadImages(searchQuery, page) {
     setLoading(true);
-    getImages(searchQuery, page)
+   
+     getImages(searchQuery, page)
       .then(response => {
         if (response.status === 200) {
           return response.json();
